@@ -23,12 +23,12 @@ namespace dotnet
     {
         public String ConnectionString { get; set; }
 
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -53,10 +53,8 @@ namespace dotnet
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
             });
-
-
-
-            ConnectionString = Configuration.GetConnectionString(Configuration["ConnectionString"]);
+            services.AddEntityFrameworkSqlServer();
+            ConnectionString = Configuration.GetConnectionString("Default");
             services.AddDbContextPool<dbContext>(s => s.UseSqlServer(
                 connectionString: this.ConnectionString));
         }
@@ -70,8 +68,6 @@ namespace dotnet
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dotnet v1"));
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 

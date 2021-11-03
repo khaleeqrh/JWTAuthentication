@@ -17,7 +17,7 @@ namespace Controllers
         public async Task<IActionResult> Login([FromBody] UserDTO request)
         {
             var response = await userService.loginAsync();
-            if(response.Value is not null)
+            if(response.Result is not null)
             {
                 return Ok(response);
             }

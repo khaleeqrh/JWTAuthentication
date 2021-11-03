@@ -56,3 +56,5 @@
 /home/onebyte/Onebyte/dotnet/obj/Debug/net5.0/ref/dotnet.dll
 /home/onebyte/Onebyte/dotnet/obj/Debug/net5.0/dotnet.pdb
 /home/onebyte/Onebyte/dotnet/obj/Debug/net5.0/dotnet.genruntimeconfig.cache
+/home/onebyte/Onebyte/dotnet/bin/Debug/net5.0/Humanizer.dll
+/home/onebyte/Onebyte/dotnet/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Design.dll

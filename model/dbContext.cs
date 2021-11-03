@@ -9,7 +9,7 @@ namespace Model
 {
     public class dbContext : DbContext
     {
-        protected dbContext(DbContextOptions<dbContext> dbContextOptions) : base(dbContextOptions)
+        public dbContext(DbContextOptions<dbContext> dbContextOptions) : base(dbContextOptions)
         {
 
         }
