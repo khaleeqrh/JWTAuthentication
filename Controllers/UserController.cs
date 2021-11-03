@@ -42,7 +42,8 @@ namespace Controllers
             try
             {
                 var jwt = await userService.Register(postedUser, postedData.Password);
-                response.AccessToken = jwt.Value.ToString();
+                response.AccessToken = jwt.Value.AccessToken;
+                response.Expiry = jwt.Value.Expiry;
             }
             catch (Exception ex)
             {
