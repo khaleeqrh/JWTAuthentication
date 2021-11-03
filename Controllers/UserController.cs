@@ -19,7 +19,6 @@ namespace Controllers
         public async Task<IActionResult> Login([FromBody] UserDTO request)
         {
             var response = await userService.loginAsync(request);
-            response.Result= OkResult;
             if (response.Value.AccessToken is not null)
             {
                 return Ok(response);
