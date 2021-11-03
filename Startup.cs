@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Model;
+using Services;
 
 namespace dotnet
 {
@@ -47,16 +49,31 @@ namespace dotnet
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
             });
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
             });
-            services.AddEntityFrameworkSqlServer();
             ConnectionString = Configuration.GetConnectionString("Default");
             services.AddDbContextPool<dbContext>(s => s.UseSqlServer(
                 connectionString: this.ConnectionString));
+
+            services.AddIdentityCore<User>(options =>
+                       {
+                           options.Password.RequireDigit = false;
+                           options.Password.RequiredLength = 6;
+                           options.Password.RequireNonAlphanumeric = false;
+                           options.Password.RequireUppercase = false;
+                           options.Password.RequireLowercase = false;
+                       });
+
+            new IdentityBuilder(typeof(User), typeof(IdentityRole), services)
+                .AddRoleManager<RoleManager<IdentityRole>>()
+                .AddSignInManager<SignInManager<User>>()
+                .AddEntityFrameworkStores<dbContext>();
+            services.AddEntityFrameworkSqlServer();
+            services.AddScoped<IUserService,UserService>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
